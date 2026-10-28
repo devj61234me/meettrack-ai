@@ -1,0 +1,26 @@
+# secrets
+.env
+*.env
+!.env.example
+# python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.sqlite3
+staticfiles/
+.pytest_cache/
+# node
+node_modules/
+frontend/dist/
+# private client data
+uploads/
+media/
+backups/
+*.sql
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
