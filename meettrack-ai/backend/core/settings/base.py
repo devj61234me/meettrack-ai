@@ -103,6 +103,20 @@ else:
             "OPTIONS": {"charset": "utf8mb4"},
         }
     }
+# Encrypted database connection (managed hosts such as Aiven require it). Use ONE of these:
+#   DB_SSL_CA_PEM = the full text of the host's ca.pem (use this on Render, which has no file storage)
+#   DB_SSL_CA     = path to a ca.pem file on disk
+_ca_pem = env("DB_SSL_CA_PEM", "").replace("\\n", "\n").strip()
+_ca_path = env("DB_SSL_CA", "")
+if _ca_pem:
+    import tempfile
+
+    with tempfile.NamedTemporaryFile("w", suffix=".pem", delete=False) as _f:
+        _f.write(_ca_pem + "\n")
+    _ca_path = _f.name
+if DB_ENGINE != "sqlite" and _ca_path:
+    DATABASES["default"]["OPTIONS"]["ssl"] = {"ca": _ca_path}
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ---------------------------------------------------------------- Auth
